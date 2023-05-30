@@ -37,7 +37,7 @@ for row in desired_rows:
     # Extract the winner of the series
     time.sleep(random.randint(1,3))
     winner = row.find('td', {'data-stat': 'winner'}).find('a').text
-
+    loser = row.find('td', {'data-stat': 'loser'}).find('a').text
     # Extract the link to the series details
     series_link = row.find('td', {'data-stat': 'series'}).find('a')['href']
     series_url = 'https://www.basketball-reference.com' + series_link  # Replace 'BASE_URL' with the base URL of the website
@@ -59,20 +59,26 @@ for row in desired_rows:
         winner_team = game_details.find('tr', class_='winner').find('a').text
         loser_team = game_details.find('tr', class_='loser').find('a').text
         
+        # if the series winner won this game, add a 'W' to the winner's order and an 'L' to the loser's order
+        # also add a win to the winner's record and a loss to the loser's record
         if winner_team == winner:
             winner_wins += 1
             winner_order += "W"
             loser_order += "L"
             loser_losses += 1
-        else:
+
+        # if the series loser won this game, add a 'L' to the winner's order and an 'W' to the loser's order
+        # also add a win to the loser's record and a loss to the winner's record
+        elif winner_team == loser:
             winner_losses += 1
             winner_order += "L"
             loser_order += "W"
             loser_wins += 1
         
         # add two rows to the dataframe, one for the winner and one for the loser
-        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': winner_team, 'Record': str(winner_wins) + '-' + str(winner_losses), 'Win Order': winner_order}, ignore_index=True)
-        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': loser_team, 'Record': str(loser_wins) + '-' + str(loser_losses), 'Win Order': loser_order}, ignore_index=True)
-        # Extract and print the desired stats from the table
+        # the winner's row will have the winner's team name, record, and win order
+        # the loser's row will have the loser's team name, record, and win order
+        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': winner, 'Record': str(winner_wins) + '-' + str(winner_losses), 'Win Order': winner_order}, ignore_index=True)
+        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': loser, 'Record': str(loser_wins) + '-' + str(loser_losses), 'Win Order': loser_order}, ignore_index=True)
     print(winner)
-df.to_csv('nba_playoff_results.csv', index=False)
+df.to_csv('test.csv', index=False)

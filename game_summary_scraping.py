@@ -4,7 +4,7 @@ import pandas as pd
 import time
 import random 
 
-series_url = 'https://www.basketball-reference.com/' + 'playoffs/1969-aba-eastern-division-semifinals-colonels-vs-pacers.html' # Replace 'BASE_URL' with the base URL of the website
+series_url = 'https://www.basketball-reference.com/playoffs/2023-nba-eastern-conference-first-round-knicks-vs-cavaliers.html' # Replace 'BASE_URL' with the base URL of the website
     # Send a GET request to the series URL
 series_response = requests.get(series_url)
 series_soup = BeautifulSoup(series_response.content, 'html.parser')
