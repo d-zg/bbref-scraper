@@ -22,8 +22,6 @@ for row in rows:
         desired_rows.append(row)
 
 
-print(desired_rows)
-
 # make a pandas dataframe
 df = pd.DataFrame(columns=['Series', 'Winner', 'This Team', 'Record', 'Win Order'])
 
@@ -31,7 +29,6 @@ df = pd.DataFrame(columns=['Series', 'Winner', 'This Team', 'Record', 'Win Order
 for row in desired_rows: 
     # Extract the winner of the series
     winner = row.find('td', {'data-stat': 'winner'}).find('a').text
-    print('Series Winner:', winner)
 
     # Extract the link to the series details
     series_link = row.find('td', {'data-stat': 'series'}).find('a')['href']
@@ -67,12 +64,8 @@ for row in desired_rows:
             loser_wins += 1
         
         # add two rows to the dataframe, one for the winner and one for the loser
-        df = df.append({'Series': series_url, 'Winner': winner, 'This Team': winner_team, 'Record': winner_wins + '-' + winner_losses, 'Win Order': winner_order}, ignore_index=True)
-        df = df.append({'Series': series_url, 'Winner': winner, 'This Team': loser_team, 'Record': loser_wins + '-' + loser_losses, 'Win Order': loser_order}, ignore_index=True)
-        # Print the game details
-        print('Game:', game_number)
-        print('Winner:', winner_team)
-        print('Loser:', loser_team)
+        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': winner_team, 'Record': str(winner_wins) + '-' + str(winner_losses), 'Win Order': winner_order}, ignore_index=True)
+        df = df._append({'Series': series_url, 'Winner': winner, 'This Team': loser_team, 'Record': str(loser_wins) + '-' + str(loser_losses), 'Win Order': loser_order}, ignore_index=True)
         # Extract and print the desired stats from the table
-        
-        print('---')
+    print(winner)
+df.to_csv('nba_playoff_results.csv', index=False)
