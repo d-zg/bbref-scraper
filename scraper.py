@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+import time
+import random 
 # URL to scrape
 url = 'https://www.basketball-reference.com/playoffs/series.html'
 
@@ -9,12 +10,19 @@ url = 'https://www.basketball-reference.com/playoffs/series.html'
 response = requests.get(url)
 html_content = response.content
 
+print(response.status_code)
+
+# Print the headers
+for h,v in response.headers.items():
+    print(h, ':', v)
+
 # Parse the HTML content
 soup = BeautifulSoup(html_content, 'html.parser')
 
 # Find all the rows in the main table
 rows = soup.find_all('tr')
 
+print(rows)
 desired_rows = []
 
 for row in rows:
@@ -28,6 +36,7 @@ df = pd.DataFrame(columns=['Series', 'Winner', 'This Team', 'Record', 'Win Order
 
 for row in desired_rows: 
     # Extract the winner of the series
+    time.sleep(random.randint(1,3))
     winner = row.find('td', {'data-stat': 'winner'}).find('a').text
 
     # Extract the link to the series details
@@ -39,7 +48,8 @@ for row in desired_rows:
     
     # Find all the game summaries in the series
     game_summaries = series_soup.find_all('div', class_='game_summary')
-    
+    if game_summaries == None:
+        print('here')
     winner_losses, winner_wins, = 0, 0
     winner_order = ""
     loser_losses, loser_wins = 0, 0
