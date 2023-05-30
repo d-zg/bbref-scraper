@@ -22,7 +22,6 @@ soup = BeautifulSoup(html_content, 'html.parser')
 # Find all the rows in the main table
 rows = soup.find_all('tr')
 
-print(rows)
 desired_rows = []
 
 for row in rows:
@@ -48,8 +47,6 @@ for row in desired_rows:
     
     # Find all the game summaries in the series
     game_summaries = series_soup.find_all('div', class_='game_summary')
-    if game_summaries == None:
-        print('here')
     winner_losses, winner_wins, = 0, 0
     winner_order = ""
     loser_losses, loser_wins = 0, 0
