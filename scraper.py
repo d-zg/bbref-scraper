@@ -35,7 +35,7 @@ df = pd.DataFrame(columns=['Series', 'Winner', 'This Team', 'Record', 'Win Order
 
 for row in desired_rows: 
     # Extract the winner of the series
-    time.sleep(random.randint(1,3))
+    time.sleep(random.randint(1,2))
     winner = row.find('td', {'data-stat': 'winner'}).find('a').text
     loser = row.find('td', {'data-stat': 'loser'}).find('a').text
     # Extract the link to the series details
@@ -81,4 +81,4 @@ for row in desired_rows:
         df = df._append({'Series': series_url, 'Winner': winner, 'This Team': winner, 'Record': str(winner_wins) + '-' + str(winner_losses), 'Win Order': winner_order}, ignore_index=True)
         df = df._append({'Series': series_url, 'Winner': winner, 'This Team': loser, 'Record': str(loser_wins) + '-' + str(loser_losses), 'Win Order': loser_order}, ignore_index=True)
     print(winner)
-df.to_csv('test.csv', index=False)
+df.to_csv('nba_playoff_results.csv', index=False)
