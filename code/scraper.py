@@ -32,10 +32,10 @@ for row in rows:
 # make a pandas dataframe
 df = pd.DataFrame(columns=['Series', 'Winner', 'This Team', 'Record', 'Win Order'])
 
-
-for row in desired_rows: 
+# print(desired_rows[-1])
+for row in reversed(desired_rows): 
     # Extract the winner of the series
-    time.sleep(random.randint(1,2))
+    time.sleep(random.randint(3,5))
     winner = row.find('td', {'data-stat': 'winner'}).find('a').text
     loser = row.find('td', {'data-stat': 'loser'}).find('a').text
     # Extract the link to the series details
@@ -81,4 +81,5 @@ for row in desired_rows:
         df = df._append({'Series': series_url, 'Winner': winner, 'This Team': winner, 'Record': str(winner_wins) + '-' + str(winner_losses), 'Win Order': winner_order}, ignore_index=True)
         df = df._append({'Series': series_url, 'Winner': winner, 'This Team': loser, 'Record': str(loser_wins) + '-' + str(loser_losses), 'Win Order': loser_order}, ignore_index=True)
     print(winner)
+    print(winner_order)
 df.to_csv('nba_playoff_results.csv', index=False)
