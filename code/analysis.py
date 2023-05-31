@@ -6,7 +6,7 @@ import scipy.stats
 
 # get the win percentage for each record
 def get_win_percentage_dict():
-    df = pd.read_csv('nba_playoff_results.csv')
+    df = pd.read_csv('../results/nba_playoff_results.csv')
 
     # Group the dataframe by 'Record' column and count the total number of rows for each group
     total_rows = df.groupby('Record').size()
@@ -35,7 +35,7 @@ def get_win_percentage_dict():
 # for each record, group by Win Order and get the win percentage and number of games for each Win Order   
 # Group by Win Order and calculate the counts
 def observed_winrate_by_order():
-    df = pd.read_csv('nba_playoff_results.csv')
+    df = pd.read_csv('../results/nba_playoff_results.csv')
     grouped = df.groupby('Win Order').agg(
         Record=('Record', 'first'),  # Get the first value of 'Record' for each group
         Same_Winner_Count=('Winner', lambda x: (x.eq(df['This Team'])).sum()),  # Count rows where 'Winner' == 'This Team'
