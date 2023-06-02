@@ -68,11 +68,13 @@ def get_p_values():
     # Get the win percentage dictionary
     win_percentage_dict = get_win_percentage_dict()
 
-    # Calculate the p-value for each row
+    # two sided p test for each observed number of wins given the overall record winrate
     observed_winrate_df['p-value'] = observed_winrate_df.apply(
-        lambda row: 1 - scipy.stats.binom.cdf(row['Same_Winner_Count'], row['Total_Count'], win_percentage_dict[row['Record']]),
+        lambda row: 2 * min(scipy.stats.binom.cdf(row['Same_Winner_Count'], row['Total_Count'], win_percentage_dict[row['Record']]),
+                            1 - scipy.stats.binom.cdf(row['Same_Winner_Count'] - 1, row['Total_Count'], win_percentage_dict[row['Record']])),
         axis=1)
 
+    observed_winrate_df['Expected Win Percentage'] = observed_winrate_df['Record'].apply(lambda x: win_percentage_dict[x])
     # Return the resulting dataframe
     return observed_winrate_df
 
@@ -83,7 +85,7 @@ results = get_p_values()
 # save results to csv
 results.to_csv('p_values.csv', index=False)
 
-mask = results['Record'].str.contains('4')
+mask = results['Record'].str.contains('4|^[WL]+$')
 
 # Invert the mask to select rows that do not contain '4'
 filtered_df = results[~mask]
